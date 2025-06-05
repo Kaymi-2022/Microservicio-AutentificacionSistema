@@ -55,4 +55,9 @@ public class UsuarioRepository implements UsuarioDtoRepository {
         List<Usuario> usuarios = (List<Usuario>) usuarioCrudRepository.findAll();
         return usuarioMapper.toDtoList(usuarios);
     }
+
+    @Override
+    public UsuarioResponseDTO findUsuarioByEmail(String email) {
+        return null; // or throw an exception
+    }
 }
