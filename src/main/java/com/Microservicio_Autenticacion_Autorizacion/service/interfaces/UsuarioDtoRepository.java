@@ -11,7 +11,6 @@ public interface UsuarioDtoRepository {
 
     List<UsuarioResponseDTO> findAllUsuarios();
     UsuarioResponseDTO findUsuarioById(int id);
-    UsuarioResponseDTO findUsuarioByEmail(String email);
     UsuarioResponseDTO saveUsuario(UsuarioRegistroDTO usuarioRegistroDTO);
     UsuarioResponseDTO updateUsuario(int id, UsuarioRegistroDTO usuarioRegistroDTO);
     void deleteUsuario(int id);
