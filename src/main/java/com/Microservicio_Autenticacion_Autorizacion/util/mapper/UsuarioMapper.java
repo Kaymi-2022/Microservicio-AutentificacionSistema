@@ -7,10 +7,12 @@ import java.util.List;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Usuario;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
+import org.springframework.stereotype.Component;
 
 
 @Mapper(componentModel = "spring", 
         uses = {RolMapper.class})
+@Component
 public interface UsuarioMapper {
     // ----- DTOs de Entrada (Request) -----
     @Mapping(target = "activo", constant = "true")
@@ -33,7 +35,5 @@ public interface UsuarioMapper {
     UsuarioResponseDTO toDto(Usuario usuario);
     // ----- Listas de DTOs -----
     List<UsuarioResponseDTO> toDtoList(List<Usuario> usuarios);
-
-
 
 }

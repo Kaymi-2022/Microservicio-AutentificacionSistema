@@ -18,10 +18,6 @@ public class Rol {
     @Column(name = "nombre_rol", nullable = false,unique = true, length = 50)
     private String nombreRol;
 
-    @Column(name = "nivel_permisos", nullable = false)
-    @ColumnDefault("1")
-    private Integer nivelPermisos;
-
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
@@ -46,14 +42,6 @@ public class Rol {
 
     public void setNombreRol(String nombreRol) {
         this.nombreRol = nombreRol;
-    }
-
-    public Integer getNivelPermisos() {
-        return nivelPermisos;
-    }
-
-    public void setNivelPermisos(Integer nivelPermisos) {
-        this.nivelPermisos = nivelPermisos;
     }
 
     public Date getFechaCreacion() {

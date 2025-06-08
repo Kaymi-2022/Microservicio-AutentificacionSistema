@@ -1,6 +1,8 @@
 package com.Microservicio_Autenticacion_Autorizacion.presentation.controller;
 
 
+import com.Microservicio_Autenticacion_Autorizacion.persistence.crud.UsuarioCrudRepository;
+import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,12 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private UsuarioService usuarioServiceImpl;
+
+
+
+
     @GetMapping("/")
     public ResponseEntity<List<UsuarioResponseDTO>> getAllUsuarios() {
         List<UsuarioResponseDTO> usuarios = usuarioService.getAllUsuarios();
@@ -28,4 +36,5 @@ public class UsuarioController {
         }
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
+
 }
