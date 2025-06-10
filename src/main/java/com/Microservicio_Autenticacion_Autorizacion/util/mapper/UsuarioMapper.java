@@ -1,12 +1,14 @@
 package com.Microservicio_Autenticacion_Autorizacion.util.mapper;
 
 
+import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Rol;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import java.util.List;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Usuario;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
+import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 
 
@@ -17,8 +19,18 @@ public interface UsuarioMapper {
     // ----- DTOs de Entrada (Request) -----
     @Mapping(target = "activo", constant = "true")
     @Mapping(target = "fechaCreacion", expression = "java(new java.util.Date())")
-    @Mapping(target = "rol", ignore = true) 
+    @Mapping(target = "rol", source = "rolId", qualifiedByName = "mapRolIdToRol")
     Usuario toEntity(UsuarioRegistroDTO dto);
+
+    @Named("mapRolIdToRol")
+    default Rol mapRolIdToRol(Integer rolId) {
+        if (rolId == null) {
+            return null;
+        }
+        Rol rol = new Rol();
+        
+        return rol;
+    }
     
 
     // ----- DTOs de Salida (Response) -----

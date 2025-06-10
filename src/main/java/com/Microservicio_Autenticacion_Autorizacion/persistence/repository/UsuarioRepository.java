@@ -11,6 +11,7 @@ import com.Microservicio_Autenticacion_Autorizacion.service.interfaces.UsuarioDt
 import com.Microservicio_Autenticacion_Autorizacion.util.mapper.UsuarioMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UsuarioRepository implements UsuarioDtoRepository {
@@ -25,7 +26,7 @@ public class UsuarioRepository implements UsuarioDtoRepository {
     @Override
     public UsuarioResponseDTO findUsuarioById(int id) {
         Usuario usuario = usuarioCrudRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el id: " + id));
         return usuarioMapper.toDto(usuario);
     }
 
@@ -38,16 +39,31 @@ public class UsuarioRepository implements UsuarioDtoRepository {
 
     @Override
     public UsuarioResponseDTO updateUsuario(int id, UsuarioRegistroDTO usuarioRegistroDTO) {
-
-        return null; // or throw an exception
+        if(!usuarioCrudRepository.existsById(id)) {
+            throw new RuntimeException("Usuario no encontrado con el id: " + id);
+        }
+        Usuario usuario = usuarioMapper.toEntity(usuarioRegistroDTO);
+        usuario.setIdUsuario(id); // Asegurarse de que el ID se establezca correctamente
+        Usuario updatedUsuario = usuarioCrudRepository.save(usuario);
+        return usuarioMapper.toDto(updatedUsuario);
     }
 
     @Override
     public void deleteUsuario(int id) {
-        UsuarioResponseDTO usuario = findUsuarioById(id);
-        if (usuario != null) {
-            usuarioCrudRepository.deleteById(id);
+        Optional<Usuario> usuarios = usuarioCrudRepository.findById(id);
+        if (usuarios.isPresent()) {
+            // Verificar si el usuario está activo
+            if (!usuarios.get().getActivo()) {
+                throw new RuntimeException("El usuario ya está inactivo.");
+            }
+            // Desactivar el usuario en lugar de eliminarlo
+            Usuario usuario = usuarios.get();
+            usuario.setActivo(false);
+            usuarioCrudRepository.save(usuario);
+        } else {
+            throw new RuntimeException("Usuario no encontrado con el id: " + id);
         }
+
     }
 
     @Override
