@@ -21,11 +21,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioService usuarioServiceImpl;
-
-
-
 
     @GetMapping("/")
     public ResponseEntity<List<UsuarioResponseDTO>> getAllUsuarios() {
@@ -45,7 +40,7 @@ public class UsuarioController {
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
-    @PutMapping("/crear")
+    @PostMapping("/crear")
     public ResponseEntity<UsuarioResponseDTO> createUsuario(UsuarioRegistroDTO usuarioRegistroDTO) {
         try {
             UsuarioResponseDTO createdUsuario = usuarioService.createUsuario(usuarioRegistroDTO);

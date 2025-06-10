@@ -1,6 +1,7 @@
 package com.Microservicio_Autenticacion_Autorizacion.util.mapper;
 
 
+import com.Microservicio_Autenticacion_Autorizacion.persistence.crud.RolCrudRepository;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Rol;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
         uses = {RolMapper.class})
 @Component
 public interface UsuarioMapper {
+
     // ----- DTOs de Entrada (Request) -----
     @Mapping(target = "activo", constant = "true")
     @Mapping(target = "fechaCreacion", expression = "java(new java.util.Date())")
@@ -28,7 +30,7 @@ public interface UsuarioMapper {
             return null;
         }
         Rol rol = new Rol();
-        
+        rol.setIdRol(rolId);
         return rol;
     }
     
