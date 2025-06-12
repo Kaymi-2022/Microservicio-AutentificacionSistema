@@ -1,4 +1,4 @@
-package com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model;
+package com.Microservicio_Autenticacion_Autorizacion.persistence.entity;
 
 import jakarta.persistence.*;
 import java.util.Date;

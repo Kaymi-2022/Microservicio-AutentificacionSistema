@@ -1,13 +1,15 @@
-package com.Microservicio_Autenticacion_Autorizacion.util.mapper;
+package com.Microservicio_Autenticacion_Autorizacion.persistence.mapper;
 
 
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Rol;
+import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Rol;
+import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import java.util.List;
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Usuario;
+import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Usuario;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +33,11 @@ public interface UsuarioMapper {
         
         return rol;
     }
-    
+
+    // ----- Actualización de DTOs de Entrada (Request) -----
+    @Mapping(target = "idUsuario", ignore = true)
+    void updateEntityFromDto(UsuarioUpdateDto dto, @MappingTarget Usuario usuario);
+
 
     // ----- DTOs de Salida (Response) -----
     @Mapping(source = "idUsuario", target = "usuarioId")
@@ -45,6 +51,7 @@ public interface UsuarioMapper {
     @Mapping(source = "activo", target = "activo", defaultValue = "true")
     @Mapping(source = "rol", target = "rol")
     UsuarioResponseDTO toDto(Usuario usuario);
+
     // ----- Listas de DTOs -----
     List<UsuarioResponseDTO> toDtoList(List<Usuario> usuarios);
 

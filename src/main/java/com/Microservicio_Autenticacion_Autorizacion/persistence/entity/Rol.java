@@ -1,7 +1,6 @@
-package com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model;
+package com.Microservicio_Autenticacion_Autorizacion.persistence.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.List;

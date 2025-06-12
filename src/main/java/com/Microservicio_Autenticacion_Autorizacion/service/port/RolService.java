@@ -1,10 +1,10 @@
-package com.Microservicio_Autenticacion_Autorizacion.service.interfaces;
+package com.Microservicio_Autenticacion_Autorizacion.service.port;
 
 import java.util.List;
 
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.RolRequestDTO;
 
-public interface RolDtoRepository {
+public interface RolService {
 
     List<RolRequestDTO> findAllRoles();
     RolRequestDTO findRoleById(Long id);

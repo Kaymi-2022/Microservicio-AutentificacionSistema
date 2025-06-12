@@ -1,8 +1,6 @@
 package com.Microservicio_Autenticacion_Autorizacion.presentation.controller;
 
 
-import com.Microservicio_Autenticacion_Autorizacion.persistence.crud.UsuarioCrudRepository;
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Usuario;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
-import com.Microservicio_Autenticacion_Autorizacion.service.implementation.UsuarioService;
 
 import java.util.List;
 
@@ -19,17 +16,17 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioServiceImpl;
 
     @Autowired
-    private UsuarioService usuarioServiceImpl;
+    private UsuarioServiceImpl usuarioServiceImpl;
 
 
 
 
     @GetMapping("/")
     public ResponseEntity<List<UsuarioResponseDTO>> getAllUsuarios() {
-        List<UsuarioResponseDTO> usuarios = usuarioService.getAllUsuarios();
+        List<UsuarioResponseDTO> usuarios = usuarioServiceImpl.getAllUsuarios();
         if (usuarios.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -38,7 +35,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> getUsuarioById(int id) {
-        UsuarioResponseDTO usuario = usuarioService.getUsuarioById(id);
+        UsuarioResponseDTO usuario = usuarioServiceImpl.getUsuarioById(id);
         if (usuario == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -48,7 +45,7 @@ public class UsuarioController {
     @PutMapping("/crear")
     public ResponseEntity<UsuarioResponseDTO> createUsuario(UsuarioRegistroDTO usuarioRegistroDTO) {
         try {
-            UsuarioResponseDTO createdUsuario = usuarioService.createUsuario(usuarioRegistroDTO);
+            UsuarioResponseDTO createdUsuario = usuarioServiceImpl.createUsuario(usuarioRegistroDTO);
             return new ResponseEntity<>(createdUsuario, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -58,7 +55,7 @@ public class UsuarioController {
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<UsuarioResponseDTO> updateUsuario(int id, UsuarioRegistroDTO usuarioRegistroDTO) {
         try {
-            UsuarioResponseDTO updatedUsuario = usuarioService.updateUsuario(id, usuarioRegistroDTO);
+            UsuarioResponseDTO updatedUsuario = usuarioServiceImpl.updateUsuario(id, usuarioRegistroDTO);
             return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -68,7 +65,7 @@ public class UsuarioController {
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<HttpStatus> deleteUsuario(@PathVariable("id") int id) {
         try {
-            usuarioService.deleteUsuario(id);
+            usuarioServiceImpl.deleteUsuario(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

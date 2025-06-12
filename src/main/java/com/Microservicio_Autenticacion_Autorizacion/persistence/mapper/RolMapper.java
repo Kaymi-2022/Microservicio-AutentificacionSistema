@@ -1,4 +1,4 @@
-package com.Microservicio_Autenticacion_Autorizacion.util.mapper;
+package com.Microservicio_Autenticacion_Autorizacion.persistence.mapper;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Rol;
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.RolPermiso;
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.model.Permiso;
+import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Rol;
+import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.RolPermiso;
+import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Permiso;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.PermisoResponseDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.RolResponseDTO;
 
