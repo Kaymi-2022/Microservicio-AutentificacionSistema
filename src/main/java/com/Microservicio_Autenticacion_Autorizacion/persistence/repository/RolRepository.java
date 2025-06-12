@@ -1,10 +1,10 @@
 package com.Microservicio_Autenticacion_Autorizacion.persistence.Repository;
 
+import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Rol;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Usuario;
 
 @Repository
-public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
+public interface RolRepository extends CrudRepository<Rol,Integer> {
 
 }

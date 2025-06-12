@@ -17,7 +17,9 @@ public class SecurityConfig {
               .cors(cors -> cors.disable())
               .authorizeHttpRequests(autorize -> autorize
                     .requestMatchers(HttpMethod.GET,"/**").permitAll()
-                    .requestMatchers(HttpMethod.POST,"/api/usuarios/crear").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/**").permitAll()
+                    .requestMatchers(HttpMethod.PUT,"/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE,"/**").permitAll()
                     .anyRequest().authenticated()
                 )
               .httpBasic(Customizer.withDefaults());

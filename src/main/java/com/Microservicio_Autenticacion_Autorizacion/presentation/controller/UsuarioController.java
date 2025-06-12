@@ -1,6 +1,6 @@
 package com.Microservicio_Autenticacion_Autorizacion.presentation.controller;
 
-
+import com.Microservicio_Autenticacion_Autorizacion.persistence.Repository.UsuarioRepository;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,67 +8,74 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
+import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDto;
+import com.Microservicio_Autenticacion_Autorizacion.service.port.UsuarioService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioServiceImpl usuarioServiceImpl;
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioServiceImpl usuarioServiceImpl;
-
-
-
+    private final UsuarioRepository usuarioRepository;
 
     @GetMapping("/")
-    public ResponseEntity<List<UsuarioResponseDTO>> getAllUsuarios() {
-        List<UsuarioResponseDTO> usuarios = usuarioServiceImpl.getAllUsuarios();
+    public ResponseEntity<List<UsuarioResponseDTO>> listaUsuario() {
+        List<UsuarioResponseDTO> usuarios = usuarioService.findAllUsuarios();
         if (usuarios.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return new ResponseEntity<>(usuarios, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> getUsuarioById(int id) {
-        UsuarioResponseDTO usuario = usuarioServiceImpl.getUsuarioById(id);
+    public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioxId(@PathVariable("id")int id) {
+        UsuarioResponseDTO usuario = usuarioService.findUsuarioById(id);
         if (usuario == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return new ResponseEntity<>(usuario, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
-    @PutMapping("/crear")
-    public ResponseEntity<UsuarioResponseDTO> createUsuario(UsuarioRegistroDTO usuarioRegistroDTO) {
+    @PostMapping("/")
+    public ResponseEntity<UsuarioResponseDTO> registrarUsuario(@Valid @RequestBody UsuarioRegistroDTO usuarioRegistroDTO) {
+        UsuarioResponseDTO createdUsuario = usuarioService.saveUsuario(usuarioRegistroDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUsuario);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> updateUsuario(@PathVariable("id") int id, @RequestBody UsuarioUpdateDto usuarioUpdateDto) {
         try {
-            UsuarioResponseDTO createdUsuario = usuarioServiceImpl.createUsuario(usuarioRegistroDTO);
-            return new ResponseEntity<>(createdUsuario, HttpStatus.CREATED);
+            UsuarioResponseDTO updatedUsuario = usuarioService.updateUsuario(id, usuarioUpdateDto);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedUsuario);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<UsuarioResponseDTO> updateUsuario(int id, UsuarioRegistroDTO usuarioRegistroDTO) {
-        try {
-            UsuarioResponseDTO updatedUsuario = usuarioServiceImpl.updateUsuario(id, usuarioRegistroDTO);
-            return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUsuario(@PathVariable("id") int id) {
+        usuarioService.deleteUsuario(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado correctamente");
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<HttpStatus> deleteUsuario(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteAllUsuarios(@PathVariable("id") int id) {
         try {
-            usuarioServiceImpl.deleteUsuario(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+            if (!usuarioRepository.existsById(id)) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario no encontrado");
+            }
+            usuarioRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado correctamente");
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

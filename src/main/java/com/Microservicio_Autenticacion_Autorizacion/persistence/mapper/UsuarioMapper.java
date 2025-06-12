@@ -11,12 +11,10 @@ import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegi
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
-import org.springframework.stereotype.Component;
 
 
 @Mapper(componentModel = "spring", 
         uses = {RolMapper.class})
-@Component
 public interface UsuarioMapper {
     // ----- DTOs de Entrada (Request) -----
     @Mapping(target = "activo", constant = "true")

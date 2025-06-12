@@ -29,12 +29,9 @@ public record UsuarioRegistroDTO (
               groups = MedicoGroup.class)
     String numeroColegiado,
 
-    String especialidad,  // Opcional
+    String especialidad,
 
-    String fotoPerfil,  // Opcional
-
-    @NotNull(message = "El estado activo es obligatorio") 
-    Boolean activo,
+    String fotoPerfil,
 
     @NotNull(message = "El rol es obligatorio") 
     Integer rolId
