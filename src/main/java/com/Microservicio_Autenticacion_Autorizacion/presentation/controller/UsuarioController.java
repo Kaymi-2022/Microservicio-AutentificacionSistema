@@ -18,12 +18,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@RequiredArgsConstructor
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
     private final UsuarioRepository usuarioRepository;
+
+    public UsuarioController(UsuarioService usuarioService, UsuarioRepository usuarioRepository) {
+        this.usuarioService = usuarioService;
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @GetMapping("/")
     public ResponseEntity<List<UsuarioResponseDTO>> listaUsuario() {
@@ -35,7 +39,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioxId(@PathVariable("id")int id) {
+    public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioxId(@PathVariable("id") int id) {
         UsuarioResponseDTO usuario = usuarioService.findUsuarioById(id);
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -49,14 +53,12 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUsuario);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> updateUsuario(@PathVariable("id") int id, @RequestBody UsuarioUpdateDto usuarioUpdateDto) {
-        try {
-            UsuarioResponseDTO updatedUsuario = usuarioService.updateUsuario(id, usuarioUpdateDto);
-            return ResponseEntity.status(HttpStatus.OK).body(updatedUsuario);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @PutMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioResponseDTO> updateUsuario(@PathVariable("idUsuario") int idUsuario, @RequestBody UsuarioUpdateDto usuarioUpdateDto) {
+        UsuarioResponseDTO updatedUsuario = usuarioService.updateUsuario(idUsuario, usuarioUpdateDto);
+        return updatedUsuario != null
+                ? ResponseEntity.status(HttpStatus.OK).body(updatedUsuario)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/{id}")

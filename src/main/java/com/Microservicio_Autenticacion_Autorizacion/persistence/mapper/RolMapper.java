@@ -12,7 +12,7 @@ import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Permiso;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.PermisoResponseDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.RolResponseDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "PersistenceRolMapperImpl")
 public interface RolMapper {
     @Mapping(source = "idRol", target = "rolId")
     @Mapping(source = "nombreRol", target = "nombreRol")

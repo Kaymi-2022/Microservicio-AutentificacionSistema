@@ -12,17 +12,23 @@ import com.Microservicio_Autenticacion_Autorizacion.presentation.exception.BadRe
 import com.Microservicio_Autenticacion_Autorizacion.service.port.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class UsuarioServiceImpl  implements UsuarioService {
+public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepo;
 
     private final UsuarioMapper usuarioMapper;
 
     private final RolRepository rolRepository;
+
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepo, UsuarioMapper usuarioMapper, RolRepository rolRepository) {
+        this.usuarioRepo = usuarioRepo;
+        this.usuarioMapper = usuarioMapper;
+        this.rolRepository = rolRepository;
+    }
 
     @Override
     public List<UsuarioResponseDTO> findAllUsuarios() {
@@ -33,22 +39,19 @@ public class UsuarioServiceImpl  implements UsuarioService {
     @Override
     public UsuarioResponseDTO findUsuarioById(int id) {
         return usuarioRepo.findById(id)
-                .map(usuarioMapper::toDto)
-                .orElse(null);
+              .map(usuarioMapper::toDto)
+              .orElse(null);
     }
 
     @Override
     public UsuarioResponseDTO saveUsuario(UsuarioRegistroDTO usuarioRegistroDTO) {
-        if(usuarioRegistroDTO.rolId() == null) {
-            throw new BadRequestException("El ID del rol no puede ser nulo");
-        }
 
-        if(usuarioRegistroDTO.rolId() == 2 && (usuarioRegistroDTO.numeroColegiado() == null || usuarioRegistroDTO.numeroColegiado().isBlank())) {
+        if (usuarioRegistroDTO.rolId() == 2 && (usuarioRegistroDTO.numeroColegiado() == null || usuarioRegistroDTO.numeroColegiado().isBlank())) {
             throw new BadRequestException("El número de colegiado no puede ser nulo para el rol de profesional");
         }
-        
+
         Rol rol = rolRepository.findById(usuarioRegistroDTO.rolId())
-                .orElseThrow(() -> new BadRequestException("Rol no encontrado con ID: " + usuarioRegistroDTO.rolId()));
+              .orElseThrow(() -> new BadRequestException("Rol no encontrado con ID: " + usuarioRegistroDTO.rolId()));
 
         Usuario usuario = usuarioMapper.toEntity(usuarioRegistroDTO);
         usuario.setRol(rol);
@@ -59,18 +62,21 @@ public class UsuarioServiceImpl  implements UsuarioService {
     @Override
     public UsuarioResponseDTO updateUsuario(int id, UsuarioUpdateDto usuarioUpdateDto) {
         Usuario existingUsuario = usuarioRepo.findById(id).orElse(null);
-        if(existingUsuario != null) {
-            usuarioMapper.updateEntityFromDto(usuarioUpdateDto, existingUsuario);
-            Usuario updatedUsuario = usuarioRepo.save(existingUsuario);
-            return usuarioMapper.toDto(updatedUsuario);
+        if (existingUsuario == null) {
+            throw new BadRequestException("Usuario no encontrado con ID: " + id);
         }
-        return null;
+        Rol rol = rolRepository.findById(usuarioUpdateDto.rolId())
+              .orElseThrow(() -> new BadRequestException("Rol no encontrado con ID: " + usuarioUpdateDto.rolId()));
+        usuarioMapper.updateEntityFromDto(usuarioUpdateDto, existingUsuario);
+        existingUsuario.setRol(rol);
+        Usuario updatedUsuario = usuarioRepo.save(existingUsuario);
+        return usuarioMapper.toDto(updatedUsuario);
     }
 
     @Override
     public void deleteUsuario(int id) {
         Usuario usuario = usuarioRepo.findById(id)
-                .orElseThrow(() -> new BadRequestException("Usuario no encontrado con ID: " + id));
+              .orElseThrow(() -> new BadRequestException("Usuario no encontrado con ID: " + id));
         usuarioRepo.delete(usuario);
     }
 }
