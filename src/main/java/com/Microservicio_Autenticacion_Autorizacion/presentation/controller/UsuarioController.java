@@ -2,18 +2,13 @@ package com.Microservicio_Autenticacion_Autorizacion.presentation.controller;
 
 import com.Microservicio_Autenticacion_Autorizacion.persistence.Repository.UsuarioRepository;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDto;
 import com.Microservicio_Autenticacion_Autorizacion.service.port.UsuarioService;
-
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 
 @RestController

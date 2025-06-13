@@ -10,7 +10,6 @@ import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResp
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDto;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.exception.BadRequestException;
 import com.Microservicio_Autenticacion_Autorizacion.service.port.UsuarioService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

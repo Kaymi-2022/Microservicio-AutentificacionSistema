@@ -7,4 +7,5 @@ import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Usuario;
 @Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
 
+    Usuario findByUsername (String username);
 }

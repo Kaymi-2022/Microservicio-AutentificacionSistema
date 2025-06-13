@@ -36,15 +36,34 @@ INSERT INTO roles_permisos (rol_id, permiso_id) VALUES
 -- 4. Insertar usuarios
 INSERT INTO usuarios (username, password, name, lastname, email, telefono, numero_colegiado, especialidad, foto_perfil, activo, fecha_creacion, rol_id) VALUES
 -- Administrador
-('admin', '$2a$10$xD6L.3Z7v5UvJz5h5sQe1eBQNQ9X9Z8v9X9Z8v9X9Z8v9X9Z8v9X9Z', 'Juan', 'Pérez', 'admin@clinica.com', '5551234567', NULL, NULL, NULL, TRUE, NOW(), 1),
+('admin', 'admin123', 'Juan', 'Pérez', 'admin@clinica.com', '5551234567', NULL, NULL, NULL, TRUE, NOW(), 1),
 -- Médico
-('dr.garcia', '$2a$10$xD6L.3Z7v5UvJz5h5sQe1eBQNQ9X9Z8v9X9Z8v9X9Z8v9X9Z8v9X9Z', 'Carlos', 'García', 'dr.garcia@clinica.com', '5557654321', '12345', 'Cardiología', 'dr_garcia.jpg', TRUE, NOW(), 2),
+('dr.garcia', 'medico123', 'Carlos', 'García', 'dr.garcia@clinica.com', '5557654321', '12345', 'Cardiología', 'dr_garcia.jpg', TRUE, NOW(), 2),
 -- Paciente
-('paciente1', '$2a$10$xD6L.3Z7v5UvJz5h5sQe1eBQNQ9X9Z8v9X9Z8v9X9Z8v9X9Z8v9X9Z', 'María', 'López', 'maria.lopez@email.com', '5559876543', NULL, NULL, 'maria.jpg', TRUE, NOW(), 3),
+('paciente1', 'paciente123', 'María', 'López', 'maria.lopez@email.com', '5559876543', NULL, NULL, 'maria.jpg', TRUE, NOW(), 3),
 -- Recepcionista
-('recepcion', '$2a$10$xD6L.3Z7v5UvJz5h5sQe1eBQNQ9X9Z8v9X9Z8v9X9Z8v9X9Z8v9X9Z', 'Ana', 'Martínez', 'recepcion@clinica.com', '5554567890', NULL, NULL, 'ana.jpg', TRUE, NOW(), 4),
+('recepcion', 'recepcion123', 'Ana', 'Martínez', 'recepcion@clinica.com', '5554567890', NULL, NULL, 'ana.jpg', TRUE, NOW(), 4),
 -- Otro médico
-('dr.rodriguez', '$2a$10$xD6L.3Z7v5UvJz5h5sQe1eBQNQ9X9Z8v9X9Z8v9X9Z8v9X9Z8v9X9Z', 'Roberto', 'Rodríguez', 'dr.rodriguez@clinica.com', '5556789012', '67890', 'Pediatría', 'dr_rodriguez.jpg', TRUE, NOW(), 2);
+('dr.rodriguez', 'rodriguez123', 'Roberto', 'Rodríguez', 'dr.rodriguez@clinica.com', '5556789012', '67890', 'Pediatría', 'dr_rodriguez.jpg', TRUE, NOW(), 2);
+
+-- Actualización de contraseñas para usuarios existentes
+UPDATE usuarios SET 
+  password = '$2a$10$GmiiDMh4l9UV1IaXaEecJOfKU53q4CSZuicufUomsI4G/ZvdV0eqm'
+WHERE usuario_id = 1;
+
+UPDATE roles SET 
+  nombre_rol = 'MEDICO'
+WHERE rol_id = 2;
+
+UPDATE roles SET 
+  nombre_rol = 'PACIENTE'
+WHERE rol_id = 3;
+
+UPDATE roles SET 
+  nombre_rol = 'RECEPCIONISTA'
+WHERE rol_id = 4;
+
+
 
 -- 6. Consultar usuarios
 SELECT * FROM usuarios;
