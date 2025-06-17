@@ -35,11 +35,12 @@ public class AuthController {
 
         System.out.println("Authentication successful for user: " + authentication.isAuthenticated()
                 + "\nand Principal: " + authentication.getPrincipal());
-        String token = jwtUtil.generateToken(loginRequestDTO.username());
-        return  ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .body("Username: " + authentication.getName() +
-                      "\nAutorities" + authentication.getAuthorities() +
-                      "\nAuthentication successful. \nToken: " + token);
+                
+        String jwt = this.jwtUtil.generateToken(loginRequestDTO.username());
+        boolean isValid = this.jwtUtil.isValidToken(jwt);
+        return  ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwt).body("Token is valid: " + isValid + "\n" +
+                "JWT: " + jwt + "\n" +
+                "Username from JWT: " + this.jwtUtil.Username(jwt));
 
     }
 }

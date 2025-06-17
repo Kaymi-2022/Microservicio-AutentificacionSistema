@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.naming.AuthenticationNotSupportedException;
 
 @Configuration
 public class SecurityConfig {
@@ -23,7 +22,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/usuarios/").hasAuthority("HISTORIAL_VER")
                 .requestMatchers(HttpMethod.GET, "/medico/**").hasRole("MEDICO")
                 .requestMatchers( "/paciente/**").hasAuthority("PACIENTE")

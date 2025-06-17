@@ -1,11 +1,6 @@
 package com.Microservicio_Autenticacion_Autorizacion.service.security;
 
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Rol;
-import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.RolPermiso;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.UsuarioRepository;
-import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Usuario;
-import com.Microservicio_Autenticacion_Autorizacion.presentation.exception.BadRequestException;
-
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
