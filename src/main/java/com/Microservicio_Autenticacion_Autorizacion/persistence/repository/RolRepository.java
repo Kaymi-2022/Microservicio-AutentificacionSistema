@@ -1,4 +1,4 @@
-package com.Microservicio_Autenticacion_Autorizacion.persistence.Repository;
+package com.Microservicio_Autenticacion_Autorizacion.persistence.repository;
 
 import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Rol;
 import org.springframework.data.repository.CrudRepository;

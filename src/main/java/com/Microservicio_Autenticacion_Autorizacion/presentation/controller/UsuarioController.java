@@ -1,6 +1,6 @@
 package com.Microservicio_Autenticacion_Autorizacion.presentation.controller;
 
-import com.Microservicio_Autenticacion_Autorizacion.persistence.Repository.UsuarioRepository;
+import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.UsuarioRepository;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
