@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -30,10 +29,10 @@ public class SecurityConfig {
               .cors(AbstractHttpConfigurer::disable)
               .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                     .requestMatchers("/api/usuarios/").hasAuthority("HISTORIAL_VER")
-                    .requestMatchers(HttpMethod.GET, "/medico/**").hasRole("MEDICO")
+                    .requestMatchers("/medico/**").hasRole("MEDICO")
                     .requestMatchers("/paciente/**").hasAuthority("PACIENTE")
-                    .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll() // Registro público
                     .anyRequest().authenticated()
               )
               //.httpBasic(Customizer.withDefaults())

@@ -26,17 +26,19 @@ public class JwtUtil {
                 .sign(ALGORITHM);
     }
 
-    public boolean isValidToken(String jwt){
+    public boolean isValidToken(String jwt) {
+
         try {
             JWT.require(ALGORITHM)
-                    .build()//
-                    .verify(jwt);
-                    log.info("JWT is valid: {}", jwt);
+                  .build()
+                  .verify(jwt);
             return true;
         } catch (JWTVerificationException e) {
-            log.error("Error verifying JWT: {}", e.getMessage());
+            throw new JWTVerificationException("Invalid JWT token: " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Error verifying JWT token: {}", e.getMessage());
             return false;
-        } 
+        }
     }
 
     public String Username(String jwt) {
