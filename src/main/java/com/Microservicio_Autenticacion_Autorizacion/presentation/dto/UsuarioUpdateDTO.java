@@ -2,7 +2,7 @@ package com.Microservicio_Autenticacion_Autorizacion.presentation.dto;
 
 import java.util.Date;
 
-public record UsuarioUpdateDto(
+public record UsuarioUpdateDTO(
       Integer idUsuario,
       String username,
       String password,

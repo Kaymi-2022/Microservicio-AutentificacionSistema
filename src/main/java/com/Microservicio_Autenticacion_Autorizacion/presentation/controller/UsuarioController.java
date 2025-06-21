@@ -2,11 +2,11 @@ package com.Microservicio_Autenticacion_Autorizacion.presentation.controller;
 
 import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.UsuarioRepository;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
+import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
-import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDto;
 import com.Microservicio_Autenticacion_Autorizacion.service.port.UsuarioService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -49,7 +49,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<UsuarioResponseDTO> updateUsuario(@PathVariable("idUsuario") int idUsuario, @RequestBody UsuarioUpdateDto usuarioUpdateDto) {
+    public ResponseEntity<UsuarioResponseDTO> updateUsuario(@PathVariable("idUsuario") int idUsuario, @RequestBody UsuarioUpdateDTO usuarioUpdateDto) {
         UsuarioResponseDTO updatedUsuario = usuarioService.updateUsuario(idUsuario, usuarioUpdateDto);
         return updatedUsuario != null
                 ? ResponseEntity.status(HttpStatus.OK).body(updatedUsuario)

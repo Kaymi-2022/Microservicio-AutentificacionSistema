@@ -2,7 +2,7 @@ package com.Microservicio_Autenticacion_Autorizacion.persistence.mapper;
 
 
 import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Rol;
-import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDto;
+import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import java.util.List;
@@ -34,7 +34,7 @@ public interface UsuarioMapper {
 
     // ----- Actualización de DTOs de Entrada (Request) -----
     @Mapping(target = "idUsuario", ignore = true)
-    void updateEntityFromDto(UsuarioUpdateDto dto, @MappingTarget Usuario usuario);
+    void updateEntityFromDto(UsuarioUpdateDTO dto, @MappingTarget Usuario usuario);
 
 
     // ----- DTOs de Salida (Response) -----

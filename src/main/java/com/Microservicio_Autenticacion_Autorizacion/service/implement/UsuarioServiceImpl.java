@@ -7,7 +7,7 @@ import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.RolRe
 import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.UsuarioRepository;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
-import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDto;
+import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.exception.BadRequestException;
 import com.Microservicio_Autenticacion_Autorizacion.service.port.UsuarioService;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioResponseDTO updateUsuario(int id, UsuarioUpdateDto usuarioUpdateDto) {
+    public UsuarioResponseDTO updateUsuario(int id, UsuarioUpdateDTO usuarioUpdateDto) {
         Usuario existingUsuario = usuarioRepo.findById(id).orElse(null);
         if (existingUsuario == null) {
             throw new BadRequestException("Usuario no encontrado con ID: " + id);

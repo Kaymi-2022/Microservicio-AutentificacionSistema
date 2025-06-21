@@ -10,14 +10,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.ErrorResponse;
+import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.ErrorResponseDTO;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex) {
-        ErrorResponse error = new ErrorResponse(
+    public ResponseEntity<ErrorResponseDTO> handleBadRequest(BadRequestException ex) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage());
         return ResponseEntity.badRequest().body(error);
@@ -25,15 +25,15 @@ public class GlobalExceptionHandler {
 
     // Maneja excepciones genéricas no controladas
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
-        ErrorResponse error = new ErrorResponse(
+    public ResponseEntity<ErrorResponseDTO> handleAllExceptions(Exception ex) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Error interno del servidor");
         return ResponseEntity.internalServerError().body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
         MethodArgumentNotValidException ex) {
         
         Map<String, String> errors = new HashMap<>();
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        ErrorResponse response = new ErrorResponse(
+        ErrorResponseDTO response = new ErrorResponseDTO(
             HttpStatus.BAD_REQUEST.value(),
             "Error de validación: " + errors.toString());
         return ResponseEntity.badRequest().body(response);
