@@ -11,27 +11,35 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
 public class SecurityConfig {
 
+    final private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/usuarios/").hasAuthority("HISTORIAL_VER")
-                .requestMatchers(HttpMethod.GET, "/medico/**").hasRole("MEDICO")
-                .requestMatchers( "/paciente/**").hasAuthority("PACIENTE")
-                .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll() // Registro público
-                .anyRequest().authenticated()
-            )
-            .httpBasic(Customizer.withDefaults())
-            .formLogin(AbstractHttpConfigurer::disable); // Deshabilitar formulario de login
-
+              .csrf(AbstractHttpConfigurer::disable)
+              .cors(AbstractHttpConfigurer::disable)
+              .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/usuarios/").hasAuthority("HISTORIAL_VER")
+                    .requestMatchers(HttpMethod.GET, "/medico/**").hasRole("MEDICO")
+                    .requestMatchers("/paciente/**").hasAuthority("PACIENTE")
+                    .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll() // Registro público
+                    .anyRequest().authenticated()
+              )
+              //.httpBasic(Customizer.withDefaults())
+              .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+              //.formLogin(Customizer.withDefaults()); Configuración de inicio de sesión por formulario
+              .formLogin(AbstractHttpConfigurer::disable); // Deshabilitar formulario de inicio de sesión
         return http.build();
     }
 
@@ -39,6 +47,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

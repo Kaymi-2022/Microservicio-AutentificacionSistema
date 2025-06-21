@@ -16,6 +16,7 @@ public class JwtUtil {
 
     private static final String SECRET_KEY = "Pl4tz1_k4ym1lygjjj5567756777-988"; 
     private static final Algorithm ALGORITHM = Algorithm.HMAC256(SECRET_KEY);
+
     public String generateToken(String username) {
        return JWT.create()
                 .withSubject(username)
@@ -28,12 +29,12 @@ public class JwtUtil {
     public boolean isValidToken(String jwt){
         try {
             JWT.require(ALGORITHM)
-                    .build()
+                    .build()//
                     .verify(jwt);
-                    log.info("JWT is valid: {}", jwt); // Usar logger
+                    log.info("JWT is valid: {}", jwt);
             return true;
         } catch (JWTVerificationException e) {
-            log.error("Error verifying JWT: {}", e.getMessage()); // Usar logger
+            log.error("Error verifying JWT: {}", e.getMessage());
             return false;
         } 
     }

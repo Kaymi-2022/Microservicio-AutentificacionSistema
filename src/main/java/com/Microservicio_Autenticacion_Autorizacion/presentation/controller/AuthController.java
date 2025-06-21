@@ -31,10 +31,12 @@ public class AuthController {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequestDTO.username(), loginRequestDTO.password());
 
-        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        try {
+            Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Authentication failed: " + e.getMessage());
+        }
 
-        System.out.println("Authentication successful for user: " + authentication.isAuthenticated()
-                + "\nand Principal: " + authentication.getPrincipal());
                 
         String jwt = this.jwtUtil.generateToken(loginRequestDTO.username());
         boolean isValid = this.jwtUtil.isValidToken(jwt);

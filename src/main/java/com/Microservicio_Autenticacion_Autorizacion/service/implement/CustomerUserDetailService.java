@@ -1,4 +1,4 @@
-package com.Microservicio_Autenticacion_Autorizacion.service.security;
+package com.Microservicio_Autenticacion_Autorizacion.service.implement;
 
 import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.UsuarioRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,14 +24,6 @@ public class CustomerUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByUsername(username);
         List<String> permisos = usuarioRepository.findPermisosCodigoByUsuarioId(usuario.getIdUsuario());
-
-        // Loggear información importante
-        System.out.println("=== DEBUG: Comparación de contraseñas ===");
-        System.out.println("Usuario: " + username);
-        System.out.println("Contraseña almacenada (hash): " + usuario.getPassword());
-        System.out.println("¿Es un hash BCrypt válido?: " + 
-            (usuario.getPassword().startsWith("$2a$") ? "Sí" : "No"));
-        System.out.println("Permisos del usuario: " + permisos);
 
         
         return User.builder()
