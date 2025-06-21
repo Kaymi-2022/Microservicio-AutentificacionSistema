@@ -29,10 +29,9 @@ public class SecurityConfig {
               .cors(AbstractHttpConfigurer::disable)
               .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
-                    .requestMatchers("/api/usuarios/").hasAuthority("HISTORIAL_VER")
-                    .requestMatchers("/medico/**").hasRole("MEDICO")
-                    .requestMatchers("/paciente/**").hasAuthority("PACIENTE")
+                    .requestMatchers(HttpMethod.GET,"/api/usuarios/**").hasRole("ADMINISTRADOR")
+                    //.requestMatchers("/medico/**").hasRole("MEDICO")
+                    //.requestMatchers("/paciente/**").hasAuthority("PACIENTE")
                     .anyRequest().authenticated()
               )
               //.httpBasic(Customizer.withDefaults())

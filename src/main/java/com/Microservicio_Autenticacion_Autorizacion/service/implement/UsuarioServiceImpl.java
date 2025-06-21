@@ -10,8 +10,10 @@ import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResp
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.exception.BadRequestException;
 import com.Microservicio_Autenticacion_Autorizacion.service.port.UsuarioService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.beans.Encoder;
 import java.util.List;
 
 @Service
@@ -53,6 +55,7 @@ public class UsuarioServiceImpl implements UsuarioService {
               .orElseThrow(() -> new BadRequestException("Rol no encontrado con ID: " + usuarioRegistroDTO.rolId()));
 
         Usuario usuario = usuarioMapper.toEntity(usuarioRegistroDTO);
+        usuario.setPassword(new BCryptPasswordEncoder().encode(usuarioRegistroDTO.password()));
         usuario.setRol(rol);
         Usuario savedUsuario = usuarioRepo.save(usuario);
         return usuarioMapper.toDto(savedUsuario);

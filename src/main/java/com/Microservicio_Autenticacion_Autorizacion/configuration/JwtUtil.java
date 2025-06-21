@@ -6,24 +6,35 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "Pl4tz1_k4ym1lygjjj5567756777-988"; 
+    private static final String SECRET_KEY = "Pl4tz1_k4ym1lygjjj5567756777-988";
     private static final Algorithm ALGORITHM = Algorithm.HMAC256(SECRET_KEY);
 
-    public String generateToken(String username) {
-       return JWT.create()
-                .withSubject(username)
-                .withIssuer("kaymilyg")
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(50))) // Token valid for 50 minutes
-                .sign(ALGORITHM);
+    public String generateToken(String username, Authentication authentication) {
+        List<String> authorities = new ArrayList<>();
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            authorities.add(authority.getAuthority());
+        }
+
+        return JWT.create()
+              .withSubject(username)
+              .withIssuer("kaymilyg")
+              .withIssuedAt(new Date())
+              .withClaim("authorities", authorities)
+              .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(50))) // Token valid for 50 minutes
+              .sign(ALGORITHM);
     }
 
     public boolean isValidToken(String jwt) {
@@ -43,8 +54,8 @@ public class JwtUtil {
 
     public String Username(String jwt) {
         return JWT.require(ALGORITHM)
-                .build()
-                .verify(jwt)
-                .getSubject();
+              .build()
+              .verify(jwt)
+              .getSubject();
     }
 }

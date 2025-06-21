@@ -31,11 +31,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, jakarta.servlet.FilterChain filterChain) throws ServletException, IOException {
 
+        // Lista blanca de endpoints públicos
+        if (request.getServletPath().startsWith("/api/auth/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 1. Verificar el header de autorización
         final String token = getJWTFromHeader(request);
 
         // 2. Validar el token
-        if (token == null && !jwtUtil.isValidToken(token)){
+        if (token == null && !jwtUtil.isValidToken(token)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -45,8 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         User userDetails = (User) userDetailsService.loadUserByUsername(username);
 
         // 4. Cargar el contexto de seguridad
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-              userDetails.getUsername(),userDetails.getPassword(), userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request, response);
