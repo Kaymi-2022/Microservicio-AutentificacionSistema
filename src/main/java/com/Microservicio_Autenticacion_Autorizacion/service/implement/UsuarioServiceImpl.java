@@ -5,15 +5,19 @@ import com.Microservicio_Autenticacion_Autorizacion.persistence.entity.Usuario;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.mapper.UsuarioMapper;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.RolRepository;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.UsuarioRepository;
+import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.UsuarioRepositoryPaginacion;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioResponseDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.exception.BadRequestException;
 import com.Microservicio_Autenticacion_Autorizacion.service.port.UsuarioService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.beans.Encoder;
 import java.util.List;
 
 @Service
@@ -21,20 +25,25 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepo;
 
+    private final UsuarioRepositoryPaginacion usuarioRepositoryPaginacion;
+
     private final UsuarioMapper usuarioMapper;
 
     private final RolRepository rolRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepo, UsuarioMapper usuarioMapper, RolRepository rolRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepo, UsuarioRepositoryPaginacion usuarioRepositoryPaginacion, UsuarioMapper usuarioMapper, RolRepository rolRepository) {
         this.usuarioRepo = usuarioRepo;
+        this.usuarioRepositoryPaginacion = usuarioRepositoryPaginacion;
         this.usuarioMapper = usuarioMapper;
         this.rolRepository = rolRepository;
     }
 
     @Override
-    public List<UsuarioResponseDTO> findAllUsuarios() {
-        List<Usuario> usuarios = (List<Usuario>) usuarioRepo.findAll();
-        return usuarioMapper.toDtoList(usuarios);
+    public Page<UsuarioResponseDTO> findAllUsuarios(int page, int elements, String sortby) {
+        //List<Usuario> usuarios = (List<Usuario>) usuarioRepo.findAll();
+        Pageable pageRequest = PageRequest.of(page,elements, Sort.by(sortby));
+        return usuarioRepositoryPaginacion.findByActivoTrue(pageRequest)
+              .map(usuarioMapper::toDto);
     }
 
     @Override
@@ -80,5 +89,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = usuarioRepo.findById(id)
               .orElseThrow(() -> new BadRequestException("Usuario no encontrado con ID: " + id));
         usuarioRepo.delete(usuario);
+    }
+
+    @Override
+    public List<UsuarioResponseDTO> findTop3User(){
+        List<Usuario> top3ByUsuarioId = usuarioRepo.findByActivoTrueOrderByIdUsuarioDesc();
+        return usuarioMapper.toDtoList(top3ByUsuarioId);
     }
 }

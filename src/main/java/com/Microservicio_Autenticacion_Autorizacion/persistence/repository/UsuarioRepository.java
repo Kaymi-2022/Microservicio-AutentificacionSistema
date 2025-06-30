@@ -22,4 +22,7 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
     WHERE u.usuario_id = :usuarioId
     """, nativeQuery = true)
     List<String> findPermisosCodigoByUsuarioId(@Param("usuarioId") Integer usuarioId);
+
+    //List<Usuario> findByActivoTrueOrderByIdUsuarioDesc();
+    List<Usuario> findByActivoTrueOrderByIdUsuarioDesc();
 }

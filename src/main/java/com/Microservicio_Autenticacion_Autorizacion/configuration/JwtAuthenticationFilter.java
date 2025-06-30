@@ -32,7 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, jakarta.servlet.FilterChain filterChain) throws ServletException, IOException {
 
         // Lista blanca de endpoints públicos
-        if (request.getServletPath().startsWith("/api/auth/")) {
+        if (request.getServletPath().startsWith("/api/auth/") || request.getServletPath()
+              .startsWith("/api/usuarios/activos")) {
             filterChain.doFilter(request, response);
             return;
         }

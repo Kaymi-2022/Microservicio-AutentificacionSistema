@@ -3,6 +3,7 @@ package com.Microservicio_Autenticacion_Autorizacion.presentation.controller;
 import com.Microservicio_Autenticacion_Autorizacion.persistence.repository.UsuarioRepository;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioRegistroDTO;
 import com.Microservicio_Autenticacion_Autorizacion.presentation.dto.UsuarioUpdateDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,10 @@ public class UsuarioController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<UsuarioResponseDTO>> listaUsuario() {
-        List<UsuarioResponseDTO> usuarios = usuarioService.findAllUsuarios();
+    public ResponseEntity<Page<UsuarioResponseDTO>> listaUsuario(@RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "5")int elements,
+                                                                 @RequestParam(defaultValue = "idUsuario") String sortBy) {
+        Page<UsuarioResponseDTO> usuarios = usuarioService.findAllUsuarios(page,elements,sortBy);
         if (usuarios.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
@@ -74,6 +77,11 @@ public class UsuarioController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/activos")
+    public ResponseEntity<List<UsuarioResponseDTO>> findTop3ByIdUser(){
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findTop3User());
     }
 
 }
