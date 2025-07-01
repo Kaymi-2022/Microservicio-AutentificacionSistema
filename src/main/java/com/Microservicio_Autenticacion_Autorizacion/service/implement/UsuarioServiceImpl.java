@@ -39,9 +39,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Page<UsuarioResponseDTO> findAllUsuarios(int page, int elements, String sortby) {
+    public Page<UsuarioResponseDTO> findAllUsuarios(int page, int elements,
+                                                    String sortby,
+                                                    String direction) {
         //List<Usuario> usuarios = (List<Usuario>) usuarioRepo.findAll();
-        Pageable pageRequest = PageRequest.of(page,elements, Sort.by(sortby));
+        Sort sort = Sort.by(Sort.Direction.fromString(direction),sortby);
+        Pageable pageRequest = PageRequest.of(page,elements, sort);
         return usuarioRepositoryPaginacion.findByActivoTrue(pageRequest)
               .map(usuarioMapper::toDto);
     }

@@ -28,8 +28,9 @@ public class UsuarioController {
     @GetMapping("/")
     public ResponseEntity<Page<UsuarioResponseDTO>> listaUsuario(@RequestParam(defaultValue = "0") int page,
                                                                  @RequestParam(defaultValue = "5")int elements,
-                                                                 @RequestParam(defaultValue = "idUsuario") String sortBy) {
-        Page<UsuarioResponseDTO> usuarios = usuarioService.findAllUsuarios(page,elements,sortBy);
+                                                                 @RequestParam(defaultValue = "idUsuario") String sortby,
+                                                                 @RequestParam(defaultValue = "ASC") String direction) {
+        Page<UsuarioResponseDTO> usuarios = usuarioService.findAllUsuarios(page,elements,sortby,direction);
         if (usuarios.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }

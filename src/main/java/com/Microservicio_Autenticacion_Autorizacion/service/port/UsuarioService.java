@@ -13,7 +13,9 @@ public interface UsuarioService {
 
     //List<UsuarioResponseDTO> findAllUsuarios();
 
-    Page<UsuarioResponseDTO> findAllUsuarios(int page, int elements,String sortBy);
+    Page<UsuarioResponseDTO> findAllUsuarios(int page, int elements,
+                                             String sortby,
+                                             String direction);
 
     UsuarioResponseDTO findUsuarioById(int id);
     UsuarioResponseDTO saveUsuario(UsuarioRegistroDTO usuarioRegistroDTO);
